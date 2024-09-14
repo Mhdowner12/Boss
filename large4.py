@@ -2,6 +2,7 @@ from telethon.sync import TelegramClient
 from telethon.tl.functions.channels import JoinChannelRequest
 from telethon.errors import SessionPasswordNeededError, PhoneCodeInvalidError
 from getpass import getpass
+import time
 
 api_id = 28223920
 api_hash = '8f1719b54a50472e94175661d630e367'
@@ -42,13 +43,18 @@ def main():
             except SessionPasswordNeededError:
                 password = getpass('Enter your 2FA password: ')
                 client.sign_in(phone_number, code, password)
-                
-        for channel in channel_usernames:
+        
+        for i, channel in enumerate(channel_usernames):
             try:
                 client(JoinChannelRequest(channel))
                 print(f'Successfully joined {channel}')
             except Exception as e:
                 print(f'Failed to join {channel}: {e}')
+            
+            # Sleep for 7 minutes after joining every 4 channels
+            if (i + 1) % 4 == 0:
+                print("Sleeping for 7 minutes...")
+                time.sleep(7 * 60)
 
     except PhoneCodeInvalidError:
         print('The code you entered is invalid. Please try again.')

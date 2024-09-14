@@ -40,7 +40,7 @@ def main():
             try:
                 client.sign_in(phone_number, code)
             except SessionPasswordNeededError:
-                password = getpass('Password: ')
+                password = getpass('Enter your 2FA password: ')
                 client.sign_in(phone_number, code, password)
                 
         for channel in channel_usernames:
